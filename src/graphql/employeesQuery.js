@@ -12,3 +12,16 @@ export const GET_Employees = gql`
         }
     }
 `;
+
+export const GET_EmployeesById = gql`
+  query ($id:ID!) {
+    Employee(id: $id) {
+      id
+      name
+      email
+      phone
+      department
+      imageUrl
+    }
+  }
+`;

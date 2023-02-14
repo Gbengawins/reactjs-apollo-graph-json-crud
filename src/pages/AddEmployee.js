@@ -36,10 +36,6 @@ const AddEmployee = () => {
         <Row>
           <Col className="col-md-8 offset-md-2">
             <legend>Add Employee Form</legend>
-            <Form.Group className="mb-3" controlId="formImageUrl">
-              <FormEvent.Label>imageUrl</FormEvent.Label>,
-              <Form.Control type="text" ref={imageUrl} />
-            </Form.Group>
             <Form.Group className="mb-3" controlId="formName">
               <FormEvent.Label>Name</FormEvent.Label>,
               <Form.Control type="text" ref={name} />
@@ -56,7 +52,15 @@ const AddEmployee = () => {
               <FormEvent.Label>Department</FormEvent.Label>,
               <Form.Control type="text" ref={department} />
             </Form.Group>
-            <Button variant="primary" type="button" onClick={addEmployeeHandler}>
+            <Form.Group className="mb-3" controlId="formImageUrl">
+              <FormEvent.Label>imageUrl</FormEvent.Label>,
+              <Form.Control type="text" ref={imageUrl} />
+            </Form.Group>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={addEmployeeHandler}
+            >
               Add
             </Button>
           </Col>
