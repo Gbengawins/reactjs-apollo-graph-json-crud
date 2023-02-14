@@ -21,7 +21,7 @@ const AddEmployee = () => {
             variables: {
                 name: name.current.value,
                 email: email.current.value,
-                phone: phone.current.value,
+                phone: Number(phone.current.value),
                 department: department.current.value,
                 imageUrl: imageUrl.current.value,
             },

@@ -11,6 +11,7 @@ export const CREATE_NewEmployee = gql`
     }
 `;
 
+
 export const UPDATE_Employee = gql`
     mutation ($id: ID!, $name: String, $email: String, $phone: Int, $department: String, imageUrl: $imageUrl) {
         id
@@ -20,4 +21,12 @@ export const UPDATE_Employee = gql`
         department
         imageUrl
     }
+`;
+
+export const DELETE_NewEmployee = gql`
+  mutation ($id: ID!) {
+    remove(id: $id) {
+      id
+    }
+  }
 `;
