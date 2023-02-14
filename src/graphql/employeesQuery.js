@@ -13,7 +13,7 @@ export const GET_Employees = gql`
     }
 `;
 
-export const GET_EmployeesById = gql`
+export const GET_EmployeeById = gql`
   query ($id:ID!) {
     Employee(id: $id) {
       id
@@ -25,3 +25,4 @@ export const GET_EmployeesById = gql`
     }
   }
 `;
+

@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { GET_AllEmployees } from '../graphql/employeesQuery';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { DELETE_EmployeeById } from '../graphql/employeeMutation';
 import DeleteConfirmation from '../components/shared/DeleteConfirmation';
 
 const AllEmployees = () => {
@@ -28,7 +29,7 @@ const AllEmployees = () => {
   }, [ data ]);
 
   const openConfirmDeleteModalHandler = () => { 
-    setItemIDToDelete(id);
+    setItemIDToDelete(0);
     showModal(true);
   };
 
@@ -44,7 +45,7 @@ const AllEmployees = () => {
       }
     }).then(() => {
       setAllEmployeesData((existingData) => {
-        return existingData.filter((_) => _.id != itemIDToDelete);
+        return existingData.filter((_) => _.id !== itemIDToDelete);
       });
       setItemIDToDelete(0);
       setShowModal(false);

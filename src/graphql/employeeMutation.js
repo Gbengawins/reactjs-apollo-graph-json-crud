@@ -23,7 +23,7 @@ export const UPDATE_Employee = gql`
     }
 `;
 
-export const DELETE_NewEmployee = gql`
+export const DELETE_EmployeeById = gql`
   mutation ($id: ID!) {
     remove(id: $id) {
       id
