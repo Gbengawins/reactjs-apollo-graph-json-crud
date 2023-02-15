@@ -1,6 +1,6 @@
 import { gql } from 'apollo/client';
 
-export const CREATE_NewEmployee = gql`
+export const CREATE_Employee = gql`
     mutation ($name: String!, $email: String!, $phone: Int!, $department: String!, imageUrl: $imageUrl) {
         id
         name

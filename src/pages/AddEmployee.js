@@ -1,34 +1,56 @@
-import { Col, Container, Row, FormEvent, Button, Form } from 'react-bootstrap';
+import { Col, Container, Row, Form, Button } from 'react-bootstrap';
 import { useRef } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_NewEmployee } from '../graphql/employeeMutation';
+import { CREATE_Employee } from '../graphql/employeeMutation';
 import { useNavigate } from 'react-router-dom';
 
 
 const AddEmployee = () => {
-    const name = useRef("");
-    const email = useRef("");
-    const phone = useRef("");
-    const department = useRef("");
-    const imageUrl = useRef("");
+  const name = useRef("");
+  const email = useRef("");
+  const phone = useRef("");
+  const department = useRef("");
+  const imageUrl = useRef("");
 
-    const [ addEmployee ] = useMutation(CREATE_NewEmployee);
+  const [ addEmployee ] = useMutation(CREATE_Employee);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const addEmployeeHandler = () => { 
-        addEmployee({
-            variables: {
-                name: name.current.value,
-                email: email.current.value,
-                phone: Number(phone.current.value),
-                department: department.current.value,
-                imageUrl: imageUrl.current.value,
+  const addEmployeeHandler = () => {
+    addEmployee({
+      variables: {
+        name: name.current.value,
+        email: email.current.value,
+        phone: Number(phone.current.value),
+        department:department.current.value,
+        imageUrl: imageUrl.current.value,
+      },
+      update(cache, { data: { createEmployee } }) {
+        cache.modify({
+          fields: {
+            allToys(existingEmployees = []) {
+              const newEmployeeRef = cache.writeFragment({
+                data: createEmployee,
+                fragment: gql`
+                  fragment newEmployee on Todo {
+                    id
+                    name
+                    email
+                    phone
+                    department
+                    imageUrl
+                  }
+                `,
+              });
+              return [...existingEmployees, newEmployeeRef];
             },
-        }).then(() => {
-            navigate('/')
+          },
         });
-    };
+      },
+    }).then(() => {
+      navigate("/");
+    });
+  };
 
   return (
     <>
@@ -37,23 +59,23 @@ const AddEmployee = () => {
           <Col className="col-md-8 offset-md-2">
             <legend>Add Employee Form</legend>
             <Form.Group className="mb-3" controlId="formName">
-              <FormEvent.Label>Name</FormEvent.Label>,
+              <Form.Label>Name</Form.Label>,
               <Form.Control type="text" ref={name} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formEmail">
-              <FormEvent.Label>Email</FormEvent.Label>,
+              <Form.Label>Email</Form.Label>,
               <Form.Control type="email" ref={email} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formPhone">
-              <FormEvent.Label>Phone</FormEvent.Label>,
+              <Form.Label>Phone</Form.Label>,
               <Form.Control type="phone" ref={phone} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formDepartment">
-              <FormEvent.Label>Department</FormEvent.Label>,
+              <Form.Label>Department</Form.Label>,
               <Form.Control type="text" ref={department} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formImageUrl">
-              <FormEvent.Label>imageUrl</FormEvent.Label>,
+              <Form.Label>imageUrl</Form.Label>,
               <Form.Control type="text" ref={imageUrl} />
             </Form.Group>
             <Button

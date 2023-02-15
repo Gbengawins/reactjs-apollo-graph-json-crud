@@ -31,19 +31,44 @@ const EditEmployee = () => {
     }, [ data ]);
 
     const updateEmployeeHandler = () => {
-        updateEmployee({
-            variables: {
-                id: Number(id),
-                name: name.current.value,
-                email: email.current.value,
-                phone: Number(phone.current.value),
-                department: department.current.value,
-                imageUrl: imageUrl.current.value,
+      updateEmployee({
+        variables: {
+          id: Number(id),
+          name: name.current.value,
+          email: email.current.value,
+          phone: Number(phone.current.value),
+          department: department.current.value,
+          imageUrl: imageUrl.current.value,
+        },
+        update(cache, { data: { updateEmployee } }) {
+          cache.modify({
+            fields: {
+              allEmployees(existingData = [], { readField }) {
+                existingData = existingData.filter(
+                  (item) => updateEmployee.id !== readField("id", item)
+                );
+                const updateEmployeeRef = cache.writeFragment({
+                  data: updateEmployee,
+                  fragment: gql`
+                    fragment newEmployee on Employee {
+                      id
+                      name
+                      email
+                      phone
+                      department
+                      imageUrl
+                    }
+                  `,
+                });
+                return [...existingData, updateEmployeeRef];
+              },
             },
-        }).then(() => {
-            navigate('/');
-        });
-    };
+          });
+        },
+      }).then(() => {
+        navigate("/");
+      });
+    }
 
 
   return (

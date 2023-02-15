@@ -42,11 +42,23 @@ const AllEmployees = () => {
     deleteEmployee({
       variables: {
         id: itemIDToDelete,
-      }
+      },
+      update(cache, { data: { removeEmployee } }) {
+        cache.modify({
+          fields: {
+            allEmployees(existingData = [], { readField }) {
+              existingData = existingData.filter(
+                (item) => removeEmployee.id !== readField("id", item)
+              );
+              return existingData;
+            },
+          },
+        });
+      },
     }).then(() => {
-      setAllEmployeesData((existingData) => {
-        return existingData.filter((_) => _.id !== itemIDToDelete);
-      });
+      // setAllEmployeesData((existingData) => {
+      //   return existingData.filter((_) => _.id !== itemIDToDelete);
+      // });
       setItemIDToDelete(0);
       setShowModal(false);
     });
